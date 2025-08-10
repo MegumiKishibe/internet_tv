@@ -1,0 +1,58 @@
+```mermaid
+erDiagram
+  Channels ||--o{ Timeslots : has
+  Timeslots ||--o{ Programslots : has
+  Programs  ||--o{ Programslots : scheduled_in
+  Episodes  ||--o{ Programslots : plays
+  Seasons   ||--o{ Programs : groups
+  Seasons   ||--o{ Episodes : contains
+  Programs  ||--o{ Programs_Genre : maps
+  Genres    ||--o{ Programs_Genre : maps
+
+  Channels {
+    int      channel_id PK "AUTO_INCREMENT"
+    int      channel_no
+  }
+  Timeslots {
+    int      timeslot_id PK
+    int      channel_id FK
+    datetime start_time
+    datetime end_time
+  }
+  Programslots {
+    int      programslot_id PK
+    int      timeslot_id FK
+    int      episode_id  FK
+    int      program_id  FK
+    int      view_count
+  }
+  Programs {
+    int      program_id PK "AUTO_INCREMENT"
+    int      series_no  "NULL OK"
+    int      season_id  FK
+    varchar  title      "VARCHAR(80) UNIQUE"
+    varchar  description "VARCHAR(300) DEFAULT 'ComingSoon!' NULL OK"
+  }
+  Seasons {
+    int      season_id PK
+    int      season_no
+  }
+  Episodes {
+    int      episode_id PK "AUTO_INCREMENT"
+    int      season_id  FK
+    int      episode_no "NULL OK"
+    varchar  title      "VARCHAR(80) UNIQUE"
+    varchar  description "VARCHAR(300) DEFAULT 'ComingSoon!' NULL OK"
+    bigint   video_duration
+    date     release_date
+    int      view_count
+  }
+  Genres {
+    int      genre_id PK
+    varchar  name      "VARCHAR(30) UNIQUE"
+  }
+  Programs_Genre {
+    int      program_id PK, FK
+    int      genre_id   PK, FK
+  }
+```

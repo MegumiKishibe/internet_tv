@@ -1,0 +1,64 @@
+<TABLES/columns>(3NF)
+
+Channel
+    |_channel_id(PK)
+    |_channel_no
+
+Timeslot
+    |_timeslot_id(PK)
+    |_channel_id(FK)
+    |_start_time
+    |_end_time
+
+Programslot
+    |_programslot_id(PK)
+    |_timeslot_id(FK)
+    |_episode_id(FK)
+    |_program_id(FK)
+    |_view_count
+
+Program
+    |_program_id(PK)
+    |_series_no(NULL OK)#単発の場合はseries_noがないため。
+    |_season_id(FK)
+    |_title
+    |_description
+
+Season
+    |_season_id(PK)
+    |_season_no
+
+Episode
+    |_episode_id(PK)
+    |_season_id(FK)(NULL OK)
+    |_title
+    |_description
+    |_video_duration
+    |_release_date
+    |_view_count
+
+
+Genre
+    |_genre_id(PK)
+    |_name
+    
+Program_Genre
+    |_program_genre_id(PK)
+    |_program_id(FK)
+    |_genre_id(FK)
+
+
+<変更点>
+    #P.slot→programslotへ名称変更。P.slotが何のことか初見でわかりにくい。
+    #Episodeテーブルのtimeslot→video_durationに変更。
+    理由：「動画再生時間」を意味するvideo_durationを設定したつもりが番組枠を意味するtimeslotが入っているため。
+    #Seasonにseason_noを追加。シーズン数はseason_idとは関係なく動く物であり、season_idでは明示できないから。
+    #program_idをchannnelテーブルからProgramslotsへ移動。
+    理由：「各チャンネルの下では時間帯ごとに番組枠が1つ設定されており、番組が放映される」つまり、
+         「Channels→timeslot→programslot→programs」と表現でき、programsはprogramslotの傘下。
+    #Timeslotテーブルの追加
+    #中間テーブルProgram_Genreの作成。故にProgramのgenre_idは削除。
+    #Channelからtimelsot_id削除。Timeslotにchannel_idを置いているため、Channel側には不要。
+        Channelはチャンネル一覧としての機能のみもたせる。
+    #Programのchannel_id削除。Programslotでprogram_idを従属させて管理。
+    #Seasonのepisode_id削除。「EpisodeがどのSeasonに属するか」

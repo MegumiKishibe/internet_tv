@@ -1,0 +1,50 @@
+<TABLES/columns>(2NF)
+
+Channel
+    |_channel_id(PK)
+    |_timeslot
+    |_P.slot_id(FK)
+    |_program_id
+
+Programslot
+    |_P.slot_id(P)
+    |_episode_id(FK)
+    |_view_count
+
+Program
+    |_program_id(PK)
+    |_series_no(NULL OK)#単発の場合はseries_noがないため。
+    |_season_id(FK)
+    |_title
+    |_p.description
+    |_genre_id
+    |_channel_id
+
+Season
+    |_season_id(PK)
+    |_episode_id(PK)
+
+Episode
+    |_episode_id(PK)(NULL OK)#単発の番組にエピソードIDがない。という意味
+    |_season_id(FK)(NULL OK)
+    |_title
+    |_epi.description
+    |_timeslot
+    |_release_date
+    |_view_count
+
+
+Genre
+    |_genre_id(PK)
+    |_name
+    |_program_id(FK)
+
+<変更内容>
+#Channel内のprogramslotを切り離し、テーブルに。
+名前が長いため、P.slot_idと名称変更してChannnelテーブルに再帰。
+#「各シーズンの下では各エピソードが設定されている」ことから、
+Seasonに従属させていたrelease_dateを削除。
+(Seasonに従属するEpisodeの中にrelease_dateが存在するため)
+#ProguramとEpisodeのdescriotion関係
+番組詳細とエピソード詳細の違う物であるため、それぞれ名称変更。
+番組詳細 P.description,エピソード詳細epi.description

@@ -1,0 +1,55 @@
+正規化
+正規化は、データベース設計の中でデータの冗長性を排除し、一貫性と整合性を保つための手法です。
+このプロセスを通じて、データの重複や不整合を防ぎ、データベースのパフォーマンスを向上させます。
+
+<Entity>
+    channels N
+    channnels-timeslot(時間帯)-programslot(番組枠)-programs(番組)
+    series,programs
+    series-seasons
+    series-seasons-episodes
+    programs 1 : channel N : programslot N 
+    programs-title,description,jenre
+    episodes-season_id,episode_id,title,description,duration(動画時間),release_date,view_count
+    jenre N : programs 1
+KPIとして、チャンネルの番組枠のエピソードごとに視聴数を記録する。
+    channnels-timesloy(時間帯)-programslot(番組枠)-programs(番組)-view_count
+    
+<TABLES/columns>(1NF)
+
+Channel
+    |_channel_id(PK)
+    |_timeslot
+    |_programslot
+        |_episode_id(FK)
+        |_view_count
+    |_program_id
+
+Program
+    |_program_id(PK)
+    |_series_no
+    |_season_id(FK)
+    |_title
+    |_description
+    |_genre_id
+    |_channel_id
+
+Season
+    |_season_id(PK)
+    |_episode_id(PK)
+    |_release_date
+
+Episode
+    |_episode_id(PK)(NULL OK)#単発の番組にエピソードIDがない。という意味
+    |_season_id(FK)(NULL OK)
+    |_title
+    |_description
+    |_timeslot
+    |_release_date
+    |_view_count
+
+
+Genre
+    |_genre_id(PK)
+    |_name
+    |_program_id(FK)

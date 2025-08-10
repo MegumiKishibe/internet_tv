@@ -1,0 +1,104 @@
+
+
+Channels
++----------------+------------+----+-------+-----------+--------------+
+|Columns         |DATA TYPE   |NULL|KEY    |DEFAULT    |AUTO INCREMENT|
++----------------+------------+----+-------+-----------+--------------+
+|channel_id      |INT         |    |PRIMARY|           |YES           |
+|channel_no      |INT         |    |       |           |              |
++----------------+------------+----+-------+-----------+--------------+
+
+Timeslots
++----------------+------------+----+-------+-----------+--------------+
+|Columns         |DATA TYPE   |NULL|KEY    |DEFAULT    |AUTO INCREMENT|
++----------------+------------+----+-------+-----------+--------------+
+|timeslot_id     |INT         |    |PRIMARY|           |              |
+|channel_id      |INT         |    |FOREIGN|           |              |
+|start_time      |DATETIME    |    |       |           |              |
+|end_time        |DATETIME    |    |       |           |              |
++----------------+------------+----+-------+-----------+--------------+
+[Foreign Keys]
+- FOREIGN KEY (channel_id) REFERENCES Channels(channel_id)
+
+Programslots
++----------------+------------+----+-------+-----------+--------------+
+|Columns         |DATA TYPE   |NULL|KEY    |DEFAULT    |AUTO INCREMENT|
++----------------+------------+----+-------+-----------+--------------+
+|programslot_id  |INT         |    |PRIMARY|           |              |
+|timeslot_id     |INT         |    |FOREIGN|           |              |
+|episode_id      |INT         |    |FOREIGN|           |              |
+|program_id      |INT         |    |FOREIGN|           |              |
+|view_count      |INT         |    |       |           |              |
++----------------+------------+----+-------+-----------+--------------+
+[Foreign Keys]
+- FOREIGN KEY (timeslot_id) REFERENCES Timeslots(timeslot_id)
+- FOREIGN KEY (episode_id) REFERENCES Episodes(episode_id)
+- FOREIGN KEY (program_id) REFERENCES Programs(program_id)
+
+
+Programs
++----------------+------------+----+-------+-----------+--------------+
+|Columns         |DATA TYPE   |NULL|KEY    |DEFAULT    |AUTO INCREMENT|
++----------------+------------+----+-------+-----------+--------------+
+|program_id      |INT         |    |PRIMARY|           |YES           |
+|series_no       |INT         |OK  |       |           |              |
+|season_id       |INT         |    |FOREIGN|           |              |
+|title           |VARCHAR(80) |    |UNIQUE |           |              |
+|description     |VARCHAR(300)|OK  |       |ComingSoon!|              |
++----------------+------------+----+-------+-----------+--------------+
+[Foreign Keys]
+- FOREIGN KEY (season_id) REFERENCES Seasons(season_id)
+
+Seasons
++----------------+------------+----+-------+-----------+--------------+
+|Columns         |DATA TYPE   |NULL|KEY    |DEFAULT    |AUTO INCREMENT|
++----------------+------------+----+-------+-----------+--------------+
+|season_id       |INT         |    |PRIMARY|           |              |
+|season_no       |INT         |    |       |           |              |
++----------------+------------+----+-------+-----------+--------------+
+
+Episodes
++----------------+------------+----+-------+-----------+--------------+
+|Columns         |DATA TYPE   |NULL|KEY    |DEFAULT    |AUTO INCREMENT|
++----------------+------------+----+-------+-----------+--------------+
+|episode_id      |INT         |    |PRIMARY|           |YES           |
+|season_id       |INT         |    |FOREIGN|           |              |
+|episode_no      |INT         |OK  |       |           |              |
+|title           |VARCHAR(80) |    |UNIQUE |           |              |
+|description     |VARCHAR(300)|OK  |       |ComingSoon!|              |
+|video_duration  |BIGINT      |    |       |           |              |
+|release_date    |DATE        |    |       |           |              |
+|view_count      |INT         |    |       |           |              |
++----------------+------------+----+-------+-----------+--------------+
+[Foreign Keys]
+- FOREIGN KEY (season_id) REFERENCES Seasons(season_id) 
+
+Genres
++----------------+------------+----+-------+-----------+--------------+
+|Columns         |DATA TYPE   |NULL|KEY    |DEFAULT    |AUTO INCREMENT|
++----------------+------------+----+-------+-----------+--------------+
+|genre_id        |INT         |    |PRIMARY|           |              |
+|name            |VARCHAR(30) |    |UNIQUE |           |              |
++----------------+------------+----+-------+-----------+--------------+
+
+Programs_Genre
++----------------+------------+----+---------------+-----------+--------------+
+|Columns         |DATA TYPE   |NULL|KEY            |DEFAULT    |AUTO INCREMENT|
++----------------+------------+----+---------------+-----------+--------------+
+|program_id      |INT         |    |PRIMARY,FOREIGN|           |              |
+|genre_id        |INT         |    |PRIMARY,FOREIGN|           |              |
++----------------+------------+----+---------------+-----------+--------------+
+[Foreign Keys]
+- FOREIGN KEY (program_id) REFERENCES Programs(program_id)
+- FOREIGN KEY (genre_id) REFERENCES Genres(genre_id)
+
+メモ
+#ユニークキー制約：このカラム（カラムの組み合わせ）の値はテーブルの中で重複禁止。というルール
+    主キー：重複禁止＋NULL禁止
+    ユニークキー：重複禁止
+    ex)
+| user_id | email                         |
+| ------- | ----------------------------- |
+| 1       | test@example.com              |
+| 2       | hello@example.com             |
+| 3       | test@example.com ❌NG！        |

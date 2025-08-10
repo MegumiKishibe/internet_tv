@@ -1,0 +1,46 @@
+-- sample_data.sql / sample_data.txt
+-- 使い方: MySQLに接続後、`USE internet_tv_db;` してから
+--   SOURCE db/sample_data.sql;
+-- などで実行
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- 既存データをクリア（必要に応じて）
+TRUNCATE TABLE Programslots;
+TRUNCATE TABLE Timeslots;
+TRUNCATE TABLE Program_Genre;
+TRUNCATE TABLE Genres;
+TRUNCATE TABLE Episodes;
+TRUNCATE TABLE Programs;
+TRUNCATE TABLE Seasons;
+TRUNCATE TABLE Channels;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+START TRANSACTION;
+
+-- =========
+-- Channels
+-- =========
+INSERT INTO Channels (channel_id, channel_no, name) VALUES
+  (1, 101, 'ドラマチャンネル'),
+  (2, 102, 'アニメチャンネル'),
+  (3, 103, 'スポーツライブ'),
+  (4, 104, 'ペット');
+
+-- ========
+-- Seasons
+-- ========
+INSERT INTO Seasons (season_id, season_no) VALUES
+  (1, 1),  -- 銀河探偵 S1
+  (2, 1),  -- クッキング・ラボ S1
+  (3, 1);  -- 単発用に仮でS1（Program側の制約に合わせるため）
+
+-- ========
+-- Programs
+-- ========
+-- series_no は単発なら NULL でOK（DDLに合わせて）
+INSERT INTO Programs (program_id, series_no, season_id, title, description) VALUES
+  (1, 1,    1, '銀河探偵',         '宇宙を舞台にした推理ドラマ。'),
+  (2, NULL, 2, 'クッキング・ラボ',
