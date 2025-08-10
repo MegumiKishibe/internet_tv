@@ -36,7 +36,7 @@ MySQL を用いたスキーマ、サンプルデータ、代表的な SQL クエ
 ├─ 1NF.txt
 ├─ 2NF.txt
 ├─ 3NF.txt                    
-├─ table_definition.txt       
+├─ table_definition.md       
 ├─ sample_data.txt            # サンプルデータ（INSERT 文）
 ├─ db_setup_manual.md         # セットアップ手順
 └─ step3.md                   # データ投入やクエリの解説

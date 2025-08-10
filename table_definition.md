@@ -1,14 +1,17 @@
 
 
-Channels
+## **Channels**
+```text
 +----------------+------------+----+-------+-----------+--------------+
 |Columns         |DATA TYPE   |NULL|KEY    |DEFAULT    |AUTO INCREMENT|
 +----------------+------------+----+-------+-----------+--------------+
 |channel_id      |INT         |    |PRIMARY|           |YES           |
 |channel_no      |INT         |    |       |           |              |
 +----------------+------------+----+-------+-----------+--------------+
+```
 
-Timeslots
+## **Timeslots**
+```text
 +----------------+------------+----+-------+-----------+--------------+
 |Columns         |DATA TYPE   |NULL|KEY    |DEFAULT    |AUTO INCREMENT|
 +----------------+------------+----+-------+-----------+--------------+
@@ -19,8 +22,10 @@ Timeslots
 +----------------+------------+----+-------+-----------+--------------+
 [Foreign Keys]
 - FOREIGN KEY (channel_id) REFERENCES Channels(channel_id)
+```
 
-Programslots
+## **Programslots**
+```text
 +----------------+------------+----+-------+-----------+--------------+
 |Columns         |DATA TYPE   |NULL|KEY    |DEFAULT    |AUTO INCREMENT|
 +----------------+------------+----+-------+-----------+--------------+
@@ -34,9 +39,10 @@ Programslots
 - FOREIGN KEY (timeslot_id) REFERENCES Timeslots(timeslot_id)
 - FOREIGN KEY (episode_id) REFERENCES Episodes(episode_id)
 - FOREIGN KEY (program_id) REFERENCES Programs(program_id)
+```
 
-
-Programs
+## **Programs**
+```text
 +----------------+------------+----+-------+-----------+--------------+
 |Columns         |DATA TYPE   |NULL|KEY    |DEFAULT    |AUTO INCREMENT|
 +----------------+------------+----+-------+-----------+--------------+
@@ -48,16 +54,20 @@ Programs
 +----------------+------------+----+-------+-----------+--------------+
 [Foreign Keys]
 - FOREIGN KEY (season_id) REFERENCES Seasons(season_id)
+```
 
-Seasons
+## **Seasons**
+```text
 +----------------+------------+----+-------+-----------+--------------+
 |Columns         |DATA TYPE   |NULL|KEY    |DEFAULT    |AUTO INCREMENT|
 +----------------+------------+----+-------+-----------+--------------+
 |season_id       |INT         |    |PRIMARY|           |              |
 |season_no       |INT         |    |       |           |              |
 +----------------+------------+----+-------+-----------+--------------+
+```
 
-Episodes
+## **Episodes**
+```text
 +----------------+------------+----+-------+-----------+--------------+
 |Columns         |DATA TYPE   |NULL|KEY    |DEFAULT    |AUTO INCREMENT|
 +----------------+------------+----+-------+-----------+--------------+
@@ -72,16 +82,20 @@ Episodes
 +----------------+------------+----+-------+-----------+--------------+
 [Foreign Keys]
 - FOREIGN KEY (season_id) REFERENCES Seasons(season_id) 
+```
 
-Genres
+## **Genres**
+```text
 +----------------+------------+----+-------+-----------+--------------+
 |Columns         |DATA TYPE   |NULL|KEY    |DEFAULT    |AUTO INCREMENT|
 +----------------+------------+----+-------+-----------+--------------+
 |genre_id        |INT         |    |PRIMARY|           |              |
 |name            |VARCHAR(30) |    |UNIQUE |           |              |
 +----------------+------------+----+-------+-----------+--------------+
+```
 
-Programs_Genre
+## **Programs_Genre**
+```text
 +----------------+------------+----+---------------+-----------+--------------+
 |Columns         |DATA TYPE   |NULL|KEY            |DEFAULT    |AUTO INCREMENT|
 +----------------+------------+----+---------------+-----------+--------------+
@@ -91,9 +105,10 @@ Programs_Genre
 [Foreign Keys]
 - FOREIGN KEY (program_id) REFERENCES Programs(program_id)
 - FOREIGN KEY (genre_id) REFERENCES Genres(genre_id)
+```
 
-メモ
-#ユニークキー制約：このカラム（カラムの組み合わせ）の値はテーブルの中で重複禁止。というルール
+## **メモ**
+- ユニークキー制約：このカラム（カラムの組み合わせ）の値はテーブルの中で重複禁止。というルール
     主キー：重複禁止＋NULL禁止
     ユニークキー：重複禁止
     ex)
